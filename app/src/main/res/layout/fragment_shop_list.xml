@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ShopListFragment">
 
-
+    <ListView
+        android:id="@+id/lv_frag_shop_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>
