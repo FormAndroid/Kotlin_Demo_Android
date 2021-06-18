@@ -1,6 +1,7 @@
 package be.bxl.formation.demo_android_kotlin
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
@@ -10,6 +11,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
+import java.net.URI
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,9 +22,9 @@ class MainActivity : AppCompatActivity() {
 
     // Utilisation du mot clef "lateinit var" pour réaliser une initialisation tardive des variables
     // -> Car au moment du constructeur, on ne connait pas la vue! On l'inilisalise lors du "onCreate"
-    private lateinit var etUsername : EditText
-    private lateinit var etPassword : EditText
-    private lateinit var btnLogin : Button
+    private lateinit var etUsername: EditText
+    private lateinit var etPassword: EditText
+    private lateinit var btnLogin: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,16 +47,25 @@ class MainActivity : AppCompatActivity() {
         // Faux test de validation (hardcode)
         if (username.toLowerCase() == "zaza" && password == "Test1234") {
             navigationToAppActivity(username)
-        }
-        else {
+        } else {
             val layout: LinearLayout = findViewById(R.id.layout_main)
             Snackbar.make(layout, "Bad credential !", Snackbar.LENGTH_LONG).show()
         }
     }
 
-    fun navigationToAppActivity (username: String) {
+    fun navigationToAppActivity(username: String) {
+        val intent: Intent = Intent().apply {
+            setClass(applicationContext, AppActivity::class.java)
+            putExtra(EXTRA_USERNAME, username)
+        }
+
+        // Alternative pour créer l'intent
+        /*
         val intent: Intent = Intent(applicationContext, AppActivity::class.java)
         intent.putExtra(EXTRA_USERNAME, username)
+         */
+
         startActivity(intent)
+        finish()
     }
 }
