@@ -4,14 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
+import be.bxl.formation.demo_android_kotlin.database.dao.ProductDao
 import be.bxl.formation.demo_android_kotlin.fragments.MenuFragment
 import be.bxl.formation.demo_android_kotlin.fragments.ShopListFragment
 import be.bxl.formation.demo_android_kotlin.models.Product
 import java.util.ArrayList
 
 class AppActivity : AppCompatActivity() {
-
-    private val products: ArrayList<Product> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,26 +29,19 @@ class AppActivity : AppCompatActivity() {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.container_app, menuFragment)
         transaction.commit()
-
-        // Initialisation de la liste avec des données hardcodé
-        // TODO : Replacer par une utiliser de SQLite
-        products.add(Product(1, "Pomme", 42, true))
-        products.add(Product(2, "Tomate", 3))
-        products.add(Product(3, "Pomme de terre", 10, false))
     }
 
     private fun manageMenuInteraction(action: MenuFragment.TypeAction) {
 
         when(action) {
-            MenuFragment.TypeAction.ADD -> TODO()
+            MenuFragment.TypeAction.ADD -> addProduct()
             MenuFragment.TypeAction.VIEW_LIST -> viewProduct()
-            MenuFragment.TypeAction.CLEAR -> TODO()
+            MenuFragment.TypeAction.CLEAR -> clearProduct()
         }
     }
 
     private fun viewProduct() {
-
-        val frag: ShopListFragment = ShopListFragment.newInstance(products)
+        val frag: ShopListFragment = ShopListFragment.newInstance()
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_app, frag)
@@ -61,5 +53,21 @@ class AppActivity : AppCompatActivity() {
             )
             .addToBackStack(null)
             .commit()
+    }
+
+    private fun addProduct() {
+        // TODO : Donnée hardcodé ajouter dans SQLite. Remplacer par le fragment d'ajout
+
+        val productDao: ProductDao = ProductDao(this)
+        productDao.openWritable()
+        productDao.insert(Product(1, "Pomme", 42, true))
+        productDao.close()
+    }
+
+    private fun clearProduct() {
+        val productDao: ProductDao = ProductDao(this)
+        productDao.openWritable()
+        productDao.deleteAll()
+        productDao.close()
     }
 }

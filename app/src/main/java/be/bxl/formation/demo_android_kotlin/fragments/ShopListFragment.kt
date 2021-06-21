@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import be.bxl.formation.demo_android_kotlin.R
+import be.bxl.formation.demo_android_kotlin.database.dao.ProductDao
 import be.bxl.formation.demo_android_kotlin.models.Product
 import java.util.ArrayList
 
-private const val ARG_PARAM_LIST = "LISTE_PRODUIT"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,19 +19,22 @@ private const val ARG_PARAM_LIST = "LISTE_PRODUIT"
  * create an instance of this fragment.
  */
 class ShopListFragment : Fragment() {
-    private lateinit var products: ArrayList<Product>
+    private lateinit var products: List<Product>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            products = it.getParcelableArrayList<Product>(ARG_PARAM_LIST)!!
-        }
+
+        val productDao = ProductDao(requireContext())
+        productDao.openReadable()
+        products = productDao.readAll()
+        productDao.close()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Inflate the layout for this fragment
         val v: View = inflater.inflate(R.layout.fragment_shop_list, container, false)
 
@@ -50,14 +53,8 @@ class ShopListFragment : Fragment() {
 
 
     companion object {
-
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(data: ArrayList<Product>) =
-            ShopListFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelableArrayList(ARG_PARAM_LIST, data)
-                }
-            }
+        fun newInstance() =
+            ShopListFragment().apply { }
     }
 }
