@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import be.bxl.formation.demo_android_kotlin.R
-import be.bxl.formation.demo_android_kotlin.models.Produit
+import be.bxl.formation.demo_android_kotlin.models.Product
 import java.util.ArrayList
 
 private const val ARG_PARAM_LIST = "LISTE_PRODUIT"
@@ -19,12 +19,12 @@ private const val ARG_PARAM_LIST = "LISTE_PRODUIT"
  * create an instance of this fragment.
  */
 class ShopListFragment : Fragment() {
-    private lateinit var produits: ArrayList<Produit>
+    private lateinit var products: ArrayList<Product>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            produits = it.getParcelableArrayList<Produit>(ARG_PARAM_LIST)!!
+            products = it.getParcelableArrayList<Product>(ARG_PARAM_LIST)!!
         }
     }
 
@@ -35,11 +35,11 @@ class ShopListFragment : Fragment() {
         // Inflate the layout for this fragment
         val v: View = inflater.inflate(R.layout.fragment_shop_list, container, false)
 
-        val adapter: ArrayAdapter<Produit> = ArrayAdapter(
+        val adapter: ArrayAdapter<Product> = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_list_item_1,
             android.R.id.text1,
-            produits
+            products
         )
 
         val listView: ListView = v.findViewById(R.id.lv_frag_shop_list)
@@ -53,7 +53,7 @@ class ShopListFragment : Fragment() {
 
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(data: ArrayList<Produit>) =
+        fun newInstance(data: ArrayList<Product>) =
             ShopListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_PARAM_LIST, data)

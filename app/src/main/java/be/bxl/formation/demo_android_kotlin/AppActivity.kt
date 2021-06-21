@@ -6,12 +6,12 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentTransaction
 import be.bxl.formation.demo_android_kotlin.fragments.MenuFragment
 import be.bxl.formation.demo_android_kotlin.fragments.ShopListFragment
-import be.bxl.formation.demo_android_kotlin.models.Produit
+import be.bxl.formation.demo_android_kotlin.models.Product
 import java.util.ArrayList
 
 class AppActivity : AppCompatActivity() {
 
-    private val produits: ArrayList<Produit> = arrayListOf()
+    private val products: ArrayList<Product> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +33,9 @@ class AppActivity : AppCompatActivity() {
 
         // Initialisation de la liste avec des données hardcodé
         // TODO : Replacer par une utiliser de SQLite
-        produits.add(Produit("Pomme", 42, true))
-        produits.add(Produit("Tomate", 3))
-        produits.add(Produit("Pomme de terre", 10, false))
+        products.add(Product(1, "Pomme", 42, true))
+        products.add(Product(2, "Tomate", 3))
+        products.add(Product(3, "Pomme de terre", 10, false))
     }
 
     private fun manageMenuInteraction(action: MenuFragment.TypeAction) {
@@ -49,7 +49,7 @@ class AppActivity : AppCompatActivity() {
 
     private fun viewProduct() {
 
-        val frag: ShopListFragment = ShopListFragment.newInstance(produits)
+        val frag: ShopListFragment = ShopListFragment.newInstance(products)
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_app, frag)
