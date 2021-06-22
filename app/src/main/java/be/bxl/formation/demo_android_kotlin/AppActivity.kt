@@ -3,8 +3,10 @@ package be.bxl.formation.demo_android_kotlin
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import be.bxl.formation.demo_android_kotlin.database.dao.ProductDao
+import be.bxl.formation.demo_android_kotlin.fragments.AddFragment
 import be.bxl.formation.demo_android_kotlin.fragments.MenuFragment
 import be.bxl.formation.demo_android_kotlin.fragments.ShopListFragment
 import be.bxl.formation.demo_android_kotlin.models.Product
@@ -34,17 +36,15 @@ class AppActivity : AppCompatActivity() {
     private fun manageMenuInteraction(action: MenuFragment.TypeAction) {
 
         when(action) {
-            MenuFragment.TypeAction.ADD -> addProduct()
-            MenuFragment.TypeAction.VIEW_LIST -> viewProduct()
+            MenuFragment.TypeAction.ADD -> switchFragment(AddFragment.newInstance())
+            MenuFragment.TypeAction.VIEW_LIST -> switchFragment(ShopListFragment.newInstance())
             MenuFragment.TypeAction.CLEAR -> clearProduct()
         }
     }
 
-    private fun viewProduct() {
-        val frag: ShopListFragment = ShopListFragment.newInstance()
-
+    private fun switchFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container_app, frag)
+            .replace(R.id.container_app, fragment)
             .setCustomAnimations(
                 android.R.anim.slide_in_left,
                 android.R.anim.fade_out,
@@ -53,15 +53,6 @@ class AppActivity : AppCompatActivity() {
             )
             .addToBackStack(null)
             .commit()
-    }
-
-    private fun addProduct() {
-        // TODO : Donnée hardcodé ajouter dans SQLite. Remplacer par le fragment d'ajout
-
-        val productDao: ProductDao = ProductDao(this)
-        productDao.openWritable()
-        productDao.insert(Product(1, "Pomme", 42, true))
-        productDao.close()
     }
 
     private fun clearProduct() {
